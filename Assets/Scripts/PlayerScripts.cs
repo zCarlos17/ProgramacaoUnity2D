@@ -1,92 +1,121 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.InputSystem; 
 
-public class PlayerScript : MonoBehaviour
+[RequireComponent(typeof(Rigidbody2D))]
+public class PlayerControllerModern : MonoBehaviour
 {
+    [Header("Movimentação")]
     public float moveSpeed = 5f;
-    private Rigidbody2D rb;
+    public float jumpForce = 10f;
+    private Vector2 moveInput; 
+    private bool facingRight = true;
 
-    void Start()
-    {
-        rb = GetComponent<Rigidbody2D>(); 
-    }
+    [Header("Pulo e Chão")]
+    public Transform groundCheck;
+    public float groundCheckRadius = 0.2f;
+    public LayerMask whatIsGround;
+    private bool isGrounded;
 
-    
-    void Update()
-    {
-       float moveInput = 0f;
-       if(Keyboard.current.aKey.isPressed || Keyboard.current.leftArrowKey.isPressed)
-       moveInput = -1f;
-       else if(Keyboard.current.dKey.isPressed || Keyboard.current.rightArrowKey.isPressed)
-       moveInput = 1f;
-       rb.linearVelocity = new Vector2(moveInput*moveSpeed, rb.linearVelocity.y);
-    }
-
-}
-public class PlayerAttack : MonoBehaviour
-{
-    public Animator animator;
-    public Transform attackpoint;
-    public float attackRange = 1.0f;
+    [Header("Combate")]
+    public int maxHealth = 100;
+    private int currentHealth;
+    public Transform attackPoint;
+    public float attackRange = 0.5f;
     public LayerMask enemyLayers;
     public int attackDamage = 20;
     public float attackRate = 2f;
-    float nextAttackTime = 0f;
+    private float nextAttackTime = 0f;
 
-    void update()
-    {
-        if (nextAttackTime.time >= nextAttackTime)
-        {
-            if (Input.GetMouseButtonDown("0"))
-            {
-                Attack();
-                nextAttackTime = Time.time + 1f / attackRate;
-            }
-        }
-    }
-
-    void Attack()
-    {
-        animator.SetTrigger("Cutucada");
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackDamageRange, enemyLayers);
-        foreach(Collider2D enemy in hitEnemies)
-        {
-            enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
-        }
-    }
-
-    void OnDrawGizmosSelected()
-    {
-        if(attackpoint == null) return;
-        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
-    }
-}
-
-public class PlayerHealth : MonoBehaviour
-{
-    public int maxHealth = 100;
-    private int currentHealth;
+    private Rigidbody2D rb;
+    private Animator anim;
 
     void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
         currentHealth = maxHealth;
     }
+
+    void Update()
+    {
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
+    }
+
+    void FixedUpdate()
+    {
+        rb.velocity = new Vector2(moveInput.x * moveSpeed, rb.velocity.y);
+
+        if (moveInput.x > 0 && !facingRight) Flip();
+        else if (moveInput.x < 0 && facingRight) Flip();
+    }
+
+
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        moveInput = context.ReadValue<Vector2>();
+    }
+
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        if (context.performed && isGrounded)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, 0); 
+            rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
+            if (anim != null) anim.SetTrigger("Jump");
+        }
+    }
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        if (context.performed && Time.time >= nextAttackTime)
+        {
+            if (anim != null) anim.SetTrigger("Attack");
+
+            Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+            foreach (Collider2D enemy in hitEnemies)
+            {
+                Debug.Log("Acertou " + enemy.name);
+            }
+
+            nextAttackTime = Time.time + 1f / attackRate;
+        }
+    }
+
 
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        Debug.Log("Jogador tomou " + damage + " de dano! Vida restante: " + currentHealth);
-
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
+        if (anim != null) anim.SetTrigger("Hurt");
+        if (currentHealth <= 0) Die();
     }
 
     void Die()
     {
-        Debug.Log("GAME OVER!");
-        
-        Destroy(gameObject);
+        Debug.Log("Morreu!");
+        if (anim != null) anim.SetBool("IsDead", true);
+        GetComponent<Collider2D>().enabled = false;
+        this.enabled = false;
+    }
+
+    void Flip()
+    {
+        facingRight = !facingRight;
+        Vector3 scaler = transform.localScale;
+        scaler.x *= -1;
+        transform.localScale = scaler;
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        if (groundCheck != null)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+        }
+        if (attackPoint != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+        }
     }
 }
