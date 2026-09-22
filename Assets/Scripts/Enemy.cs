@@ -5,6 +5,7 @@ public class Enemy : MonoBehaviour
 {
     [Header("Status do Inimigo")]
     public int maxHealth = 100;
+    public float moveSpeed = 3f;
     protected int currentHealth;
 
     [Header("Combate")]
