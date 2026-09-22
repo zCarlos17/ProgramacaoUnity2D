@@ -5,8 +5,8 @@ using UnityEngine.InputSystem;
 public class PlayerControllerModern : MonoBehaviour
 {
     [Header("Movimentação")]
-    public float moveSpeed = 5f;
-    public float jumpForce = 10f;
+    public float moveSpeed = 7f;
+    public float jumpForce = 8f;
     private Vector2 moveInput; 
     private bool facingRight = true;
 
