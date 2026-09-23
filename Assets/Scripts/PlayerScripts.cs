@@ -5,8 +5,8 @@ using UnityEngine.InputSystem;
 public class PlayerControllerModern : MonoBehaviour
 {
     [Header("Movimentação")]
-    public float moveSpeed = 5f;
-    public float jumpForce = 10f;
+    public float moveSpeed = 7f;
+    public float jumpForce = 8f;
     private Vector2 moveInput; 
     private bool facingRight = true;
 
@@ -43,7 +43,7 @@ public class PlayerControllerModern : MonoBehaviour
 
     void FixedUpdate()
     {
-        rb.velocity = new Vector2(moveInput.x * moveSpeed, rb.velocity.y);
+        rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
 
         if (moveInput.x > 0 && !facingRight) Flip();
         else if (moveInput.x < 0 && facingRight) Flip();
@@ -59,7 +59,7 @@ public class PlayerControllerModern : MonoBehaviour
     {
         if (context.performed && isGrounded)
         {
-            rb.velocity = new Vector2(rb.velocity.x, 0); 
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0); 
             rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
             if (anim != null) anim.SetTrigger("Jump");
         }
