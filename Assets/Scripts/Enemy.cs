@@ -82,7 +82,7 @@ public class Enemy : MonoBehaviour
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(attackPoint.position, attackRange);
         
-        if(rb != null) rb.velocity = Vector2.zero; 
+        if(rb != null) rb.linearVelocity = Vector2.zero; 
         
         this.enabled = false; 
         

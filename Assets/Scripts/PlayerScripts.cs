@@ -44,7 +44,7 @@ public class PlayerControllerModern : MonoBehaviour
     void FixedUpdate()
     {
         rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
-        rb.velocity = new Vector2(moveInput.x * moveSpeed, rb.velocity.y);
+        rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
 
         if (moveInput.x > 0 && !facingRight) Flip();
         else if (moveInput.x < 0 && facingRight) Flip();
@@ -61,7 +61,7 @@ public class PlayerControllerModern : MonoBehaviour
         if (context.performed && isGrounded)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0); 
-            rb.velocity = new Vector2(rb.velocity.x, 0); 
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0); 
             rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
             if (anim != null) anim.SetTrigger("Jump");
         }
