@@ -46,6 +46,8 @@ public class PlayerControllerModern : MonoBehaviour
         rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
         rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
 
+        anim.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
+
         if (moveInput.x > 0 && !facingRight) Flip();
         else if (moveInput.x < 0 && facingRight) Flip();
     }
