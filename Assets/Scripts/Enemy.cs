@@ -88,12 +88,4 @@ public class Enemy : MonoBehaviour
         
         }
     }
-    protected virtual void OnDrawGizmosSelected()
-    {
-        if (attackPoint != null)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(attackPoint.position, attackRange);
-        }
-    }
 }
