@@ -5,6 +5,7 @@ public class Enemy : MonoBehaviour
 {
     [Header("Status do Inimigo")]
     public int maxHealth = 100;
+    public float moveSpeed = 3f;
     protected int currentHealth;
 
     [Header("Combate")]
@@ -74,6 +75,19 @@ public class Enemy : MonoBehaviour
         this.enabled = false; 
     }
 
+    protected virtual void OnDrawGizmosSelected()
+    {
+        if (attackPoint != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+        
+        if(rb != null) rb.velocity = Vector2.zero; 
+        
+        this.enabled = false; 
+        
+        }
+    }
     protected virtual void OnDrawGizmosSelected()
     {
         if (attackPoint != null)

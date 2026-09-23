@@ -44,6 +44,7 @@ public class PlayerControllerModern : MonoBehaviour
     void FixedUpdate()
     {
         rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
+        rb.velocity = new Vector2(moveInput.x * moveSpeed, rb.velocity.y);
 
         if (moveInput.x > 0 && !facingRight) Flip();
         else if (moveInput.x < 0 && facingRight) Flip();
@@ -60,6 +61,7 @@ public class PlayerControllerModern : MonoBehaviour
         if (context.performed && isGrounded)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0); 
+            rb.velocity = new Vector2(rb.velocity.x, 0); 
             rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
             if (anim != null) anim.SetTrigger("Jump");
         }
@@ -95,6 +97,28 @@ public class PlayerControllerModern : MonoBehaviour
         if (anim != null) anim.SetBool("IsDead", true);
         GetComponent<Collider2D>().enabled = false;
         this.enabled = false;
+    }
+
+    void Flip()
+    {
+        facingRight = !facingRight;
+        Vector3 scaler = transform.localScale;
+        scaler.x *= -1;
+        transform.localScale = scaler;
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        if (groundCheck != null)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+        }
+        if (attackPoint != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+        }
     }
 
     void Flip()
