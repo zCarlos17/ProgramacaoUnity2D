@@ -11,109 +11,201 @@ public class PlayerScript : MonoBehaviour
 {
     public float moveSpeed = 5f;
     public float jumpForce = 10f;
-    
+
     public Transform groundCheck;
     public float groundCheckRadius = 0.2f;
     public LayerMask groundLayer;
-    
+
     private Rigidbody2D rb;
-    private bool isGrounded;a
+    private bool isGrounded;
+    [RequireComponent(typeof(Rigidbody2D))]
 
-    void Start()
+    public class PlayerControllerModern : MonoBehaviour
     {
-        rb = GetComponent<Rigidbody2D>(); 
-    }
+        [Header("Movimentação")]
+        public float moveSpeed = 7f;
+        public float jumpForce = 8f;
+        private Vector2 moveInput;
+        private bool facingRight = true;
 
-    void Update()
-    {
-        if (groundCheck != null)
+        [Header("Pulo e Chão")]
+        public Transform groundCheck;
+        public float groundCheckRadius = 0.2f;
+        public LayerMask whatIsGround;
+        private bool isGrounded;
+
+        void Update()
         {
-            isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-        }
-
-        float moveInput = 0f;
-
-        if (Keyboard.current != null)
-        {
-            if (Keyboard.current.aKey.isPressed || Keyboard.current.leftArrowKey.isPressed)
-                moveInput = -1f;
-            else if (Keyboard.current.dKey.isPressed || Keyboard.current.rightArrowKey.isPressed)
-                moveInput = 1f;
-
-            rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
-
-            if (Keyboard.current.spaceKey.wasPressedThisFrame && isGrounded)
+            if (groundCheck != null)
             {
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+                isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+            }
+
+            float moveInput = 0f;
+
+            if (Keyboard.current != null)
+            {
+                if (Keyboard.current.aKey.isPressed || Keyboard.current.leftArrowKey.isPressed)
+                    moveInput = -1f;
+                else if (Keyboard.current.dKey.isPressed || Keyboard.current.rightArrowKey.isPressed)
+                    moveInput = 1f;
+
+                rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
+
+                if (Keyboard.current.spaceKey.wasPressedThisFrame && isGrounded)
+                {
+                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+                }
             }
         }
     }
-}
 
-public class PlayerAttack : MonoBehaviour
-{
-    public Animator animator;
-    public Transform attackPoint;
-    public float attackRange = 1.0f;
-    public LayerMask enemyLayers;
-    public int attackDamage = 20;
-    public float attackRate = 2f;
-    float nextAttackTime = 0f;
-
-    void Update()
+    public class PlayerAttack : MonoBehaviour
     {
-        if (Time.time >= nextAttackTime)
+        public Animator animator;
+        public Transform attackPoint;
+        public float attackRange = 1.0f;
+        [Header("Combate")]
+        public int maxHealth = 100;
+        private int currentHealth;
+        public Transform attackPoint;
+        public float attackRange = 0.5f;
+        public LayerMask enemyLayers;
+        public int attackDamage = 20;
+        public float attackRate = 2f;
+        private float nextAttackTime = 0f;
+
+        void Update()
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Time.time >= nextAttackTime)
             {
-                Attack();
+                if (Input.GetMouseButtonDown(0))
+                {
+                    Attack();
+                    nextAttackTime = Time.time + 1f / attackRate;
+                }
+            }
+        }
+
+        void Attack()
+        {
+            animator.SetTrigger("Cutucada");
+            Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+
+            foreach (Collider2D enemy in hitEnemies)
+            {
+                enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
+            }
+        }
+
+        void OnDrawGizmosSelected()
+        {
+            if (attackPoint == null) return;
+            Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+        }
+    }
+
+    public class PlayerHealth : MonoBehaviour
+    {
+        public int maxHealth = 100;
+        private int currentHealth;
+        private Rigidbody2D rb;
+        private Animator anim;
+
+        void Start()
+        {
+            rb = GetComponent<Rigidbody2D>();
+            anim = GetComponent<Animator>();
+            currentHealth = maxHealth;
+        }
+
+        void Update()
+        {
+            isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
+        }
+
+        void FixedUpdate()
+        {
+            rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
+            rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
+
+            anim.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
+
+            if (moveInput.x > 0 && !facingRight) Flip();
+            else if (moveInput.x < 0 && facingRight) Flip();
+        }
+
+
+        public void OnMove(InputAction.CallbackContext context)
+        {
+            moveInput = context.ReadValue<Vector2>();
+        }
+
+        public void OnJump(InputAction.CallbackContext context)
+        {
+            if (context.performed && isGrounded)
+            {
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
+                rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
+                if (anim != null) anim.SetTrigger("Jump");
+            }
+        }
+
+        public void OnAttack(InputAction.CallbackContext context)
+        {
+            if (context.performed && Time.time >= nextAttackTime)
+            {
+                if (anim != null) anim.SetTrigger("Attack");
+
+                Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+                foreach (Collider2D enemy in hitEnemies)
+                {
+                    Debug.Log("Acertou " + enemy.name);
+                }
+
                 nextAttackTime = Time.time + 1f / attackRate;
             }
         }
-    }
 
-    void Attack()
-    {
-        animator.SetTrigger("Cutucada");
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
-        
-        foreach(Collider2D enemy in hitEnemies)
+
+        public void TakeDamage(int damage)
         {
-            enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
+            currentHealth -= damage;
+            if (anim != null) anim.SetTrigger("Hurt");
+            if (currentHealth <= 0) Die();
         }
-    }
 
-    void OnDrawGizmosSelected()
-    {
-        if(attackPoint == null) return;
-        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
-    }
-}
-
-public class PlayerHealth : MonoBehaviour
-{
-    public int maxHealth = 100;
-    private int currentHealth;
-
-    void Start()
-    {
-        currentHealth = maxHealth;
-    }
-
-    public void TakeDamage(int damage)
-    {
-        currentHealth -= damage;
-        Debug.Log("Jogador tomou " + damage + " de dano! Vida restante: " + currentHealth);
-
-        if (currentHealth <= 0)
+        void Die()
         {
-            Die();
+            Debug.Log("GAME OVER!");
+            Destroy(gameObject);
+            Debug.Log("Morreu!");
+            if (anim != null) anim.SetBool("IsDead", true);
+            GetComponent<Collider2D>().enabled = false;
+            this.enabled = false;
         }
-    }
 
-    void Die()
-    {
-        Debug.Log("GAME OVER!");
-        Destroy(gameObject);
+        void Flip()
+        {
+            facingRight = !facingRight;
+            Vector3 scaler = transform.localScale;
+            scaler.x *= -1;
+            transform.localScale = scaler;
+        }
+
+        void OnDrawGizmosSelected()
+        {
+            if (groundCheck != null)
+            {
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+            }
+            if (attackPoint != null)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+            }
+        }
     }
 }
