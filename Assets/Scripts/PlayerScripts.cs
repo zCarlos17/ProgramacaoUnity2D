@@ -58,7 +58,6 @@ public class PlayerScript : MonoBehaviour
             [Header("Combate")]
             public int maxHealth = 100;
             private int currentHealth;
-            public Transform attackPoint;
             public float attackRange = 0.5f;
             public LayerMask enemyLayers;
             public int attackDamage = 20;
