@@ -55,7 +55,6 @@ public class PlayerScript : MonoBehaviour
         {
             public Animator animator;
             public Transform attackPoint;
-            public float attackRange = 1.0f;
             [Header("Combate")]
             public int maxHealth = 100;
             private int currentHealth;
