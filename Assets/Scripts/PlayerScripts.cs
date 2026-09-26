@@ -145,14 +145,6 @@ public class PlayerControllerModern : MonoBehaviour
             this.enabled = false;
         }
 
-        void Flip()
-        {
-            facingRight = !facingRight;
-            Vector3 scaler = transform.localScale;
-            scaler.x *= -1;
-            transform.localScale = scaler;
-        }
-
 
         void OnDrawGizmosSelected()
         {
