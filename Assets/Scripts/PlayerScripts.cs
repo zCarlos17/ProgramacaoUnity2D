@@ -107,9 +107,14 @@ public class PlayerControllerModern : MonoBehaviour
         }
     }
 
+    private float lastDamageTime;
+    public float damageCooldown = 0.5f; 
 
     public void TakeDamage(int damage)
     {
+        if (Time.time < lastDamageTime + damageCooldown) return;
+        lastDamageTime = Time.time;
+
         currentHealth -= damage;
         Debug.Log("Player tomou dano! Vida restante: " + currentHealth);
 
@@ -120,7 +125,6 @@ public class PlayerControllerModern : MonoBehaviour
             Die();
         }
     }
-
     void Die()
     {
         Debug.Log("GAME OVER! Personagem Morreu.");
