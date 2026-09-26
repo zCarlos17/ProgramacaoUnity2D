@@ -160,5 +160,13 @@ public class PlayerControllerModern : MonoBehaviour
                 Gizmos.DrawWireSphere(attackPoint.position, attackRange);
             }
         }
+
+        void Flip()
+        {
+            facingRight = !facingRight;
+            Vector3 scaler = transform.localScale;
+            scaler.x *= -1;
+            transform.localScale = scaler;
+        }S
     }
 }
