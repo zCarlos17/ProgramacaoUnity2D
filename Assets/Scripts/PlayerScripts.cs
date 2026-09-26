@@ -51,35 +51,6 @@ public class PlayerScript : MonoBehaviour
             moveInput = context.ReadValue<Vector2>();
         }
 
-        public void OnJump(InputAction.CallbackContext context)
-        {
-            if (context.performed && isGrounded)
-        void Update()
-            {
-                if (groundCheck != null)
-                {
-                    isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-                }
-
-                float moveInput = 0f;
-
-                if (Keyboard.current != null)
-                {
-                    if (Keyboard.current.aKey.isPressed || Keyboard.current.leftArrowKey.isPressed)
-                        moveInput = -1f;
-                    else if (Keyboard.current.dKey.isPressed || Keyboard.current.rightArrowKey.isPressed)
-                        moveInput = 1f;
-
-                    rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
-
-                    if (Keyboard.current.spaceKey.wasPressedThisFrame && isGrounded)
-                    {
-                        rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-                    }
-                }
-            }
-        }
-
         public class PlayerAttack : MonoBehaviour
         {
             public Animator animator;
