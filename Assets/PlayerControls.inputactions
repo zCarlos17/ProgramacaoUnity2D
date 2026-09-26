@@ -62,7 +62,7 @@
                 {
                     "name": "2D Vector",
                     "id": "e7baed3a-ae74-489a-843f-126a439465ce",
-                    "path": "2DVector",
+                    "path": "2DVector(mode=1)",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -127,19 +127,8 @@
                 },
                 {
                     "name": "",
-                    "id": "ab54a196-4e60-450e-87af-e31ab1e5b7f8",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Attack",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "422954d4-102c-401f-a2f3-652a0881fd76",
-                    "path": "<Mouse>/leftButton",
+                    "id": "dafd6e8f-c001-4d56-a168-56474a538a20",
+                    "path": "<Keyboard>/l",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
