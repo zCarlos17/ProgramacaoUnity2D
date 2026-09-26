@@ -167,6 +167,6 @@ public class PlayerControllerModern : MonoBehaviour
             Vector3 scaler = transform.localScale;
             scaler.x *= -1;
             transform.localScale = scaler;
-        }S
+        }
     }
 }
