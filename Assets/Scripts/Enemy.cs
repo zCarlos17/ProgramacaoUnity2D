@@ -40,11 +40,16 @@ public class Enemy : MonoBehaviour
     }
 
     protected virtual void Attack(Collider2D player)
+{
+    if (anim != null) anim.SetTrigger("Attack");
+    
+    Debug.Log(gameObject.name + " atacou " + player.name);
+    PlayerControllerModern playerScript = player.GetComponent<PlayerControllerModern>();
+    if (playerScript != null)
     {
-        if (anim != null) anim.SetTrigger("Attack");
-        
-        Debug.Log(gameObject.name + " atacou " + player.name);
+        playerScript.TakeDamage(attackDamage);
     }
+}
 
     public virtual void TakeDamage(int damage)
     {
