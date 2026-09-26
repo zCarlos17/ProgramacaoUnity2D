@@ -46,9 +46,7 @@ public class PlayerControllerModern : MonoBehaviour
 
     void FixedUpdate()
     {
-
         rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
-
 
         if (anim != null)
         {
@@ -65,6 +63,13 @@ public class PlayerControllerModern : MonoBehaviour
         }
     }
 
+    void Flip()
+    {
+        facingRight = !facingRight;
+        Vector3 scaler = transform.localScale;
+        scaler.x *= -1;
+        transform.localScale = scaler;
+    }
 
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -159,14 +164,6 @@ public class PlayerControllerModern : MonoBehaviour
                 Gizmos.color = Color.red;
                 Gizmos.DrawWireSphere(attackPoint.position, attackRange);
             }
-        }
-
-        void Flip()
-        {
-            facingRight = !facingRight;
-            Vector3 scaler = transform.localScale;
-            scaler.x *= -1;
-            transform.localScale = scaler;
         }
     }
 }
