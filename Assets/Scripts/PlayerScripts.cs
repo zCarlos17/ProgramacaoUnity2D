@@ -137,7 +137,7 @@ public class PlayerControllerModern : MonoBehaviour
 
         if (rb != null)
         {
-            rb.velocity = Vector2.zero;
+            rb.linearVelocity = Vector2.zero;
             rb.simulated = false;
 
 
