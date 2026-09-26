@@ -46,10 +46,10 @@ public class PlayerControllerModern : MonoBehaviour
 
     void FixedUpdate()
     {
-        
+
         rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
 
-       
+
         if (anim != null)
         {
             anim.SetFloat("Speed", Mathf.Abs(rb.linearVelocity.x));
@@ -77,7 +77,7 @@ public class PlayerControllerModern : MonoBehaviour
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
             rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
-            
+
             if (anim != null) anim.SetTrigger("Jump");
         }
     }
@@ -94,7 +94,7 @@ public class PlayerControllerModern : MonoBehaviour
                 foreach (Collider2D enemy in hitEnemies)
                 {
                     Debug.Log("Acertou " + enemy.name);
-                    
+
                     Enemy enemyScript = enemy.GetComponent<Enemy>();
                     if (enemyScript != null)
                     {
@@ -108,7 +108,7 @@ public class PlayerControllerModern : MonoBehaviour
     }
 
     private float lastDamageTime;
-    public float damageCooldown = 0.5f; 
+    public float damageCooldown = 0.5f;
 
     public void TakeDamage(int damage)
     {
@@ -127,38 +127,46 @@ public class PlayerControllerModern : MonoBehaviour
     }
     void Die()
     {
-        Debug.Log("GAME OVER! Personagem Morreu.");
-        if (anim != null) anim.SetBool("IsDead", true);
+        Debug.Log("Personagem Morreu!");
 
-       
-        Collider2D col = GetComponent<Collider2D>();
-        if (col != null) col.enabled = false;
-        
-        rb.linearVelocity = Vector2.zero;
-        this.enabled = false; 
-    }
-
-    void Flip()
-    {
-        facingRight = !facingRight;
-        Vector3 scaler = transform.localScale;
-        scaler.x *= -1;
-        transform.localScale = scaler;
-    }
-
-
-    void OnDrawGizmosSelected()
-    {
-        if (groundCheck != null)
+        if (anim != null)
         {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+            anim.SetTrigger("Die");
         }
 
-        if (attackPoint != null)
+
+        if (rb != null)
         {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+            rb.velocity = Vector2.zero;
+            rb.simulated = false;
+
+
+            GetComponent<Collider2D>().enabled = false;
+            this.enabled = false;
+        }
+
+        void Flip()
+        {
+            facingRight = !facingRight;
+            Vector3 scaler = transform.localScale;
+            scaler.x *= -1;
+            transform.localScale = scaler;
+        }
+
+
+        void OnDrawGizmosSelected()
+        {
+            if (groundCheck != null)
+            {
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+            }
+
+            if (attackPoint != null)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+            }
         }
     }
 }
