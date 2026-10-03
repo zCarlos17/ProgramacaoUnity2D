@@ -109,27 +109,27 @@ public class PlayerControllerModern : MonoBehaviour
     public float damageCooldown = 0.5f;
 
     public void TakeDamage(int damage)
+{
+    if (Time.time < lastDamageTime + damageCooldown) return;
+    lastDamageTime = Time.time;
+
+    currentHealth -= damage;
+    currentHealth = Mathf.Max(currentHealth, 0);
+    Debug.Log("Player tomou dano! Vida restante: " + currentHealth);
+
+    if (HealthBar.instance != null)
+        HealthBar.instance.AtualizarVida(currentHealth, maxHealth);
+
+    if (DamageVignette.instance != null)
+        DamageVignette.instance.Piscar();
+
+    if (anim != null) anim.SetTrigger("Hurt");
+
+    if (currentHealth <= 0)
     {
-        if (Time.time < lastDamageTime + damageCooldown) return;
-        lastDamageTime = Time.time;
-
-        currentHealth -= damage;
-        currentHealth = Mathf.Max(currentHealth, 0);
-        Debug.Log("Player tomou dano! Vida restante: " + currentHealth);
-
-        if (HealthBar.instance != null)
-            HealthBar.instance.AtualizarVida(currentHealth, maxHealth);
-
-        if (DamageVignette.instance != null)
-            DamageVignette.instance.Piscar();
-
-        if (anim != null) anim.SetTrigger("Hurt");
-
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
+        Die();
     }
+}
     void Die()
     {
         Debug.Log("Personagem Morreu!");
@@ -139,38 +139,41 @@ public class PlayerControllerModern : MonoBehaviour
             anim.SetTrigger("Die");
         }
 
+
         if (rb != null)
         {
             rb.linearVelocity = Vector2.zero;
             rb.simulated = false;
 
+
             GetComponent<Collider2D>().enabled = false;
             this.enabled = false;
         }
-    }
 
-    void OnDrawGizmosSelected()
-    {
-        if (groundCheck != null)
-        {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
-        }
 
-        if (attackPoint != null)
+        void OnDrawGizmosSelected()
         {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+            if (groundCheck != null)
+            {
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+            }
+
+            if (attackPoint != null)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+            }
         }
     }
 
     void Start()
-    {
-        rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
-        currentHealth = maxHealth;
+{
+    rb = GetComponent<Rigidbody2D>();
+    anim = GetComponent<Animator>();
+    currentHealth = maxHealth;
 
-        if (HealthBar.instance != null)
-            HealthBar.instance.AtualizarVida(currentHealth, maxHealth);
-    }
+    if (HealthBar.instance != null)
+        HealthBar.instance.AtualizarVida(currentHealth, maxHealth);
+}
 }

@@ -130,12 +130,12 @@ TextureImporter:
       name: Skeleton_01_White_Walk_0
       rect:
         serializedVersion: 2
-        x: 35
+        x: 0
         y: 0
-        width: 33
-        height: 46
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 96
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -152,12 +152,12 @@ TextureImporter:
       name: Skeleton_01_White_Walk_1
       rect:
         serializedVersion: 2
-        x: 130
+        x: 96
         y: 0
-        width: 34
-        height: 47
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 96
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -174,12 +174,12 @@ TextureImporter:
       name: Skeleton_01_White_Walk_2
       rect:
         serializedVersion: 2
-        x: 226
+        x: 192
         y: 0
-        width: 35
-        height: 48
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 96
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -196,12 +196,12 @@ TextureImporter:
       name: Skeleton_01_White_Walk_3
       rect:
         serializedVersion: 2
-        x: 321
+        x: 288
         y: 0
-        width: 37
-        height: 49
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 96
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -218,12 +218,12 @@ TextureImporter:
       name: Skeleton_01_White_Walk_4
       rect:
         serializedVersion: 2
-        x: 416
+        x: 384
         y: 0
-        width: 38
-        height: 47
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 96
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -240,19 +240,19 @@ TextureImporter:
       name: Skeleton_01_White_Walk_5
       rect:
         serializedVersion: 2
-        x: 510
+        x: 480
         y: 0
-        width: 41
-        height: 46
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 96
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 26bb0613542598310800000000000000
+      spriteID: 7c5fdb24e949d974fb67a664287d83b3
       internalID: 1407746815664634722
       vertices: []
       indices: 
@@ -262,19 +262,19 @@ TextureImporter:
       name: Skeleton_01_White_Walk_6
       rect:
         serializedVersion: 2
-        x: 608
+        x: 576
         y: 0
-        width: 38
-        height: 47
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 96
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 5dc99018527e65840800000000000000
+      spriteID: 8abc128b5f985804a9050d63cf69dbb5
       internalID: 5212607766992624853
       vertices: []
       indices: 
@@ -284,19 +284,19 @@ TextureImporter:
       name: Skeleton_01_White_Walk_7
       rect:
         serializedVersion: 2
-        x: 705
+        x: 672
         y: 0
-        width: 37
-        height: 48
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 96
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 43aaadb62e6d84460800000000000000
+      spriteID: d44b1099c9234174685b072b95a3bfa6
       internalID: 7226261870076406324
       vertices: []
       indices: 
@@ -306,19 +306,19 @@ TextureImporter:
       name: Skeleton_01_White_Walk_8
       rect:
         serializedVersion: 2
-        x: 802
+        x: 768
         y: 0
-        width: 35
-        height: 49
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 96
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 815865357982d5840800000000000000
+      spriteID: 76621f652625de849a2743292ef42fac
       internalID: 5214368573968254232
       vertices: []
       indices: 
@@ -328,19 +328,19 @@ TextureImporter:
       name: Skeleton_01_White_Walk_9
       rect:
         serializedVersion: 2
-        x: 898
+        x: 864
         y: 0
-        width: 34
-        height: 47
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 96
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 41131526825910d00800000000000000
+      spriteID: 05fb164ab7e3b964686cd81d8cae662c
       internalID: 937194198150492436
       vertices: []
       indices: 
@@ -350,7 +350,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 17267bf13d8b5704ab245e4d3263068c
     internalID: 0
     vertices: []
     indices: 
@@ -358,7 +358,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":96.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.0},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":7,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       Skeleton_01_White_Walk_0: 5818877937026341535
       Skeleton_01_White_Walk_1: 5246328315798846087

@@ -1,6 +1,7 @@
 using UnityEngine;
 public class Skeleton : Enemy 
 {
+    //private bool facingRight = true;
     protected override void Start()
     {
         maxHealth = 50;
@@ -12,5 +13,7 @@ public class Skeleton : Enemy
         moveSpeed = 4.5f; 
 
         base.Start(); 
+        //Flip();
     }
+    
 }

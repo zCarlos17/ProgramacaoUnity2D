@@ -7,7 +7,14 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
+<<<<<<< HEAD
   m_Conditions: []
+=======
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: Attack
+    m_EventTreshold: 0
+>>>>>>> 779ffa4329296945ec18b85645e9c2821522dc96
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -2925854912803052020}
   m_Solo: 0
@@ -56,7 +63,14 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
+<<<<<<< HEAD
   m_Conditions: []
+=======
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: Hurt
+    m_EventTreshold: 0
+>>>>>>> 779ffa4329296945ec18b85645e9c2821522dc96
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1728306198255449448}
   m_Solo: 0
@@ -189,12 +203,42 @@ AnimatorController:
   m_Name: Skeleton
   serializedVersion: 5
   m_AnimatorParameters:
+<<<<<<< HEAD
+=======
+  - m_Name: Speed
+    m_Type: 1
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
+  - m_Name: IsWalking
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
+  - m_Name: Attack
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
+>>>>>>> 779ffa4329296945ec18b85645e9c2821522dc96
   - m_Name: Hurt
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
+<<<<<<< HEAD
+=======
+  - m_Name: New Bool
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
+>>>>>>> 779ffa4329296945ec18b85645e9c2821522dc96
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -215,7 +259,14 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
+<<<<<<< HEAD
   m_Conditions: []
+=======
+  m_Conditions:
+  - m_ConditionMode: 3
+    m_ConditionEvent: IsAttack
+    m_EventTreshold: 0
+>>>>>>> 779ffa4329296945ec18b85645e9c2821522dc96
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -1247022879730780491}
   m_Solo: 0
@@ -225,7 +276,11 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.63414633
+<<<<<<< HEAD
   m_HasExitTime: 1
+=======
+  m_HasExitTime: 0
+>>>>>>> 779ffa4329296945ec18b85645e9c2821522dc96
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -264,7 +319,14 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
+<<<<<<< HEAD
   m_Conditions: []
+=======
+  m_Conditions:
+  - m_ConditionMode: 4
+    m_ConditionEvent: Speed
+    m_EventTreshold: 0.1
+>>>>>>> 779ffa4329296945ec18b85645e9c2821522dc96
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -1247022879730780491}
   m_Solo: 0
@@ -274,7 +336,11 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.28571433
+<<<<<<< HEAD
   m_HasExitTime: 1
+=======
+  m_HasExitTime: 0
+>>>>>>> 779ffa4329296945ec18b85645e9c2821522dc96
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -286,7 +352,17 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
+<<<<<<< HEAD
   m_Conditions: []
+=======
+  m_Conditions:
+  - m_ConditionMode: 3
+    m_ConditionEvent: Speed
+    m_EventTreshold: 0.1
+  - m_ConditionMode: 3
+    m_ConditionEvent: IsWalking
+    m_EventTreshold: 0
+>>>>>>> 779ffa4329296945ec18b85645e9c2821522dc96
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -7181642106608716258}
   m_Solo: 0
