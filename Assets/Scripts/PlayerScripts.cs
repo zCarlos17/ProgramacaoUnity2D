@@ -29,13 +29,6 @@ public class PlayerControllerModern : MonoBehaviour
     private Rigidbody2D rb;
     private Animator anim;
 
-    void Start()
-    {
-        rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
-        currentHealth = maxHealth;
-    }
-
     void Update()
     {
         if (groundCheck != null)
@@ -121,7 +114,14 @@ public class PlayerControllerModern : MonoBehaviour
         lastDamageTime = Time.time;
 
         currentHealth -= damage;
+        currentHealth = Mathf.Max(currentHealth, 0);
         Debug.Log("Player tomou dano! Vida restante: " + currentHealth);
+
+        if (HealthBar.instance != null)
+            HealthBar.instance.AtualizarVida(currentHealth, maxHealth);
+
+        if (DamageVignette.instance != null)
+            DamageVignette.instance.Piscar();
 
         if (anim != null) anim.SetTrigger("Hurt");
 
@@ -139,31 +139,38 @@ public class PlayerControllerModern : MonoBehaviour
             anim.SetTrigger("Die");
         }
 
-
         if (rb != null)
         {
             rb.linearVelocity = Vector2.zero;
             rb.simulated = false;
 
-
             GetComponent<Collider2D>().enabled = false;
             this.enabled = false;
         }
+    }
 
-
-        void OnDrawGizmosSelected()
+    void OnDrawGizmosSelected()
+    {
+        if (groundCheck != null)
         {
-            if (groundCheck != null)
-            {
-                Gizmos.color = Color.yellow;
-                Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
-            }
-
-            if (attackPoint != null)
-            {
-                Gizmos.color = Color.red;
-                Gizmos.DrawWireSphere(attackPoint.position, attackRange);
-            }
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
         }
+
+        if (attackPoint != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+        }
+    }
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
+        currentHealth = maxHealth;
+
+        if (HealthBar.instance != null)
+            HealthBar.instance.AtualizarVida(currentHealth, maxHealth);
     }
 }
