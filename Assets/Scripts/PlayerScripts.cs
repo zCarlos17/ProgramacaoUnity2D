@@ -26,8 +26,18 @@ public class PlayerControllerModern : MonoBehaviour
     public float attackRate = 2f;
     private float nextAttackTime = 0f;
 
+    [Header("Dano e Knockback")]
+    public float damageCooldown = 0.5f;
+    public float knockbackForce = 6f;       // impulso horizontal
+    public float knockbackUpForce = 3f;     // pulinho para cima
+    public float knockbackDuration = 0.2f;  // tempo sem controle
+    private float lastDamageTime = -999f;
+    private float knockbackEndTime;
+
     private Rigidbody2D rb;
     private Animator anim;
+
+    private bool InKnockback => Time.time < knockbackEndTime;
 
     void Start()
     {
@@ -46,21 +56,18 @@ public class PlayerControllerModern : MonoBehaviour
 
     void FixedUpdate()
     {
-        rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
-
         if (anim != null)
         {
             anim.SetFloat("Speed", Mathf.Abs(rb.linearVelocity.x));
         }
 
-        if (moveInput.x > 0 && !facingRight)
-        {
-            Flip();
-        }
-        else if (moveInput.x < 0 && facingRight)
-        {
-            Flip();
-        }
+        // Durante o knockback, não sobrescreve a velocidade nem vira o sprite
+        if (InKnockback) return;
+
+        rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
+
+        if (moveInput.x > 0 && !facingRight) Flip();
+        else if (moveInput.x < 0 && facingRight) Flip();
     }
 
     void Flip()
@@ -78,7 +85,7 @@ public class PlayerControllerModern : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (context.performed && isGrounded)
+        if (context.performed && isGrounded && !InKnockback)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
             rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
@@ -112,58 +119,73 @@ public class PlayerControllerModern : MonoBehaviour
         }
     }
 
-    private float lastDamageTime;
-    public float damageCooldown = 0.5f;
+    // Dano com origem: aplica knockback (inimigos, espinhos etc.)
+    public void TakeDamage(int damage, Vector2 sourcePosition)
+    {
+        if (!ApplyDamage(damage)) return; // cooldown ativo ou morreu: sem dano e sem empurrão
 
+        float dir = Mathf.Sign(transform.position.x - sourcePosition.x);
+        if (dir == 0) dir = facingRight ? -1f : 1f;
+
+        rb.linearVelocity = new Vector2(dir * knockbackForce, knockbackUpForce);
+        knockbackEndTime = Time.time + knockbackDuration;
+    }
+
+    // Dano simples, sem knockback (ex.: água)
     public void TakeDamage(int damage)
     {
-        if (Time.time < lastDamageTime + damageCooldown) return;
+        ApplyDamage(damage);
+    }
+
+    // Retorna true se o dano foi aceito e o player continua vivo
+    private bool ApplyDamage(int damage)
+    {
+        if (Time.time < lastDamageTime + damageCooldown) return false;
         lastDamageTime = Time.time;
 
         currentHealth -= damage;
         Debug.Log("Player tomou dano! Vida restante: " + currentHealth);
 
-        if (anim != null) anim.SetTrigger("Hurt");
-
         if (currentHealth <= 0)
         {
             Die();
+            return false;
         }
+
+        if (anim != null) anim.SetTrigger("Hurt");
+        return true;
     }
+
     void Die()
     {
         Debug.Log("Personagem Morreu!");
 
-        if (anim != null)
-        {
-            anim.SetTrigger("Die");
-        }
-
+        if (anim != null) anim.SetTrigger("Die");
 
         if (rb != null)
         {
             rb.linearVelocity = Vector2.zero;
             rb.simulated = false;
-
-
-            GetComponent<Collider2D>().enabled = false;
-            this.enabled = false;
         }
 
+        Collider2D col = GetComponent<Collider2D>();
+        if (col != null) col.enabled = false;
 
-        void OnDrawGizmosSelected()
+        this.enabled = false;
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        if (groundCheck != null)
         {
-            if (groundCheck != null)
-            {
-                Gizmos.color = Color.yellow;
-                Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
-            }
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+        }
 
-            if (attackPoint != null)
-            {
-                Gizmos.color = Color.red;
-                Gizmos.DrawWireSphere(attackPoint.position, attackRange);
-            }
+        if (attackPoint != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(attackPoint.position, attackRange);
         }
     }
 }
