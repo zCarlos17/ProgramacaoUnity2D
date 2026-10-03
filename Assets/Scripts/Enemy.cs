@@ -26,30 +26,29 @@ public class Enemy : MonoBehaviour
         anim = GetComponent<Animator>();
     }
 
-    protected virtual void Update()
+    void Update()
     {
-        if (Time.time >= nextAttackTime && attackPoint != null)
+        if (Time.time >= nextAttackTime)
         {
-            Collider2D hitPlayer = Physics2D.OverlapCircle(attackPoint.position, attackRange, playerLayer);
-            if (hitPlayer != null)
+            if (Vector2.Distance(transform.position, player.position) <= attackRange)
             {
-                Attack(hitPlayer);
+                Attack(playerCollider);
                 nextAttackTime = Time.time + 1f / attackRate;
             }
         }
     }
 
     protected virtual void Attack(Collider2D player)
-{
-    if (anim != null) anim.SetTrigger("Attack");
-    
-    Debug.Log(gameObject.name + " atacou " + player.name);
-    PlayerControllerModern playerScript = player.GetComponent<PlayerControllerModern>();
-    if (playerScript != null)
     {
-        playerScript.TakeDamage(attackDamage);
+        if (anim != null) anim.SetTrigger("Attack");
+
+        Debug.Log(gameObject.name + " atacou " + player.name);
+        PlayerControllerModern playerScript = player.GetComponent<PlayerControllerModern>();
+        if (playerScript != null)
+        {
+            playerScript.TakeDamage(attackDamage);
+        }
     }
-}
 
     public virtual void TakeDamage(int damage)
     {
@@ -74,10 +73,10 @@ public class Enemy : MonoBehaviour
         {
             col.enabled = false;
         }
-        
-        if (rb != null) rb.linearVelocity = Vector2.zero; 
-        
-        this.enabled = false; 
+
+        if (rb != null) rb.linearVelocity = Vector2.zero;
+
+        this.enabled = false;
     }
 
     protected virtual void OnDrawGizmosSelected()
@@ -86,11 +85,11 @@ public class Enemy : MonoBehaviour
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(attackPoint.position, attackRange);
-        
-        if(rb != null) rb.linearVelocity = Vector2.zero; 
-        
-        this.enabled = false; 
-        
+
+            if (rb != null) rb.linearVelocity = Vector2.zero;
+
+            this.enabled = false;
+
         }
     }
 }
