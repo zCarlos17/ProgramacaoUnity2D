@@ -39,11 +39,13 @@ public class PlayerControllerModern : MonoBehaviour
 
     private bool InKnockback => Time.time < knockbackEndTime;
 
-    void Start()
-    {
-        rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
-        currentHealth = maxHealth;
+    void Start(){
+    rb = GetComponent<Rigidbody2D>();
+    anim = GetComponent<Animator>();
+    currentHealth = maxHealth;
+
+        if (HealthBar.instance != null)
+        HealthBar.instance.AtualizarVida(currentHealth, maxHealth);
     }
 
     void Update()
@@ -118,11 +120,10 @@ public class PlayerControllerModern : MonoBehaviour
             nextAttackTime = Time.time + 1f / attackRate;
         }
     }
-
     // Dano com origem: aplica knockback (inimigos, espinhos etc.)
     public void TakeDamage(int damage, Vector2 sourcePosition)
     {
-        if (!ApplyDamage(damage)) return; // cooldown ativo ou morreu: sem dano e sem empurrão
+        if (!ApplyDamage(damage)) return; // cooldown ativo ou morreu: sem empurrão
 
         float dir = Mathf.Sign(transform.position.x - sourcePosition.x);
         if (dir == 0) dir = facingRight ? -1f : 1f;
@@ -143,8 +144,12 @@ public class PlayerControllerModern : MonoBehaviour
         if (Time.time < lastDamageTime + damageCooldown) return false;
         lastDamageTime = Time.time;
 
-        currentHealth -= damage;
+        currentHealth = Mathf.Max(currentHealth - damage, 0);
         Debug.Log("Player tomou dano! Vida restante: " + currentHealth);
+
+        // Atualiza a barra ANTES de checar a morte
+        if (HealthBar.instance != null)
+            HealthBar.instance.AtualizarVida(currentHealth, maxHealth);
 
         if (currentHealth <= 0)
         {
@@ -156,14 +161,12 @@ public class PlayerControllerModern : MonoBehaviour
         return true;
     }
 
-    void Die()
-    {
+    void Die(){
         Debug.Log("Personagem Morreu!");
 
         if (anim != null) anim.SetTrigger("Die");
 
-        if (rb != null)
-        {
+        if (rb != null){
             rb.linearVelocity = Vector2.zero;
             rb.simulated = false;
         }
