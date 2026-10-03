@@ -32,6 +32,19 @@ public class Enemy : MonoBehaviour
         {
             playerTransform = playerObj.transform;
         }
+        else
+        {
+            PlayerControllerModern playerScript = Object.FindFirstObjectByType<PlayerControllerModern>();
+            if (playerScript != null)
+            {
+                playerTransform = playerScript.transform;
+                Debug.Log("O Esqueleto encontrou o Player através do script!");
+            }
+            else
+            {
+                Debug.LogError("ERRO GRAVE: O Esqueleto não conseguiu encontrar o Player de maneira nenhuma!");
+            }
+        }
     }
 
     void Update()
